@@ -79,4 +79,47 @@ router.post("/", validateCar, (req, res) => {
     });
 });
 
+// update a car
+router.put("/:id", validateCar, (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+
+    // validate the data
+    knex("cars")
+        .where({ id })
+        .update(changes)
+        .then(count => {
+        if (count > 0) {
+            res.status(200).json({ message: `${count} car(s) updated` });
+        } else {
+            res.status(404).json({ message: "Car not found" });
+        }
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({
+                error: "Error updating the car."
+            });
+        });
+});
+
+// delete a car
+
+router.delete("/:id", (req, res) => {
+    knex("cars")
+        .where({ id: req.params.id })
+        .del()
+        .then(count => {
+            if (count > 0) {
+                res.status(200).json({ message: `${count} car(s) deleted` });
+            } else {
+                res.status(404).json({ message: "Car not found" });
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({ error: "Error removing the car." });
+        })
+});
+
 module.exports = router;
