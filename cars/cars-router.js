@@ -104,7 +104,6 @@ router.put("/:id", validateCar, (req, res) => {
 });
 
 // delete a car
-
 router.delete("/:id", (req, res) => {
     knex("cars")
         .where({ id: req.params.id })
