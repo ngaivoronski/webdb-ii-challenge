@@ -8,14 +8,14 @@ const router = express.Router();
 // Middleware
 
 function validateCar(req, res, next) {
-    if (req.body && req.body.VIN && req.body.make && req.body.model && req.body.milage) {
+    if (req.body && Object.entries(req.body).length > 0 && req.body.VIN && req.body.make && req.body.model && req.body.milage) {
         if(!isNaN(req.body.milage)) {
             next();
         }
         else {
             res.status(400).json({ message: "Please enter a number for milage" });
         }
-    } else if (req.body) {
+    } else if (req.body && Object.entries(req.body).length > 0) {
         res.status(400).json({ message: "Please enter provide values for VIN, make, model, milage, transmissiontype (optional), and status (optional)." });
     } else {
         res.status(400).json({ message: "Please enter the data for the car." });
